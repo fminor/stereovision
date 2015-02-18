@@ -25,6 +25,7 @@ int main(){ // Task 2: Stereo Calibration
 
 	// Save F
 	saveFundamentalMatrix("F.txt", F);
+	saveStereoCalib("Stereo.txt", R, T, E, F);
 
 	cin.get();
 	return 0;

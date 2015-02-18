@@ -15,11 +15,11 @@ int main() { // Task 1: Camera Calibration
 	// LEFT CAMERA
 	cout << "Left Camera" << endl;
 	calibrateFromImages(pathL, imagesL, boardSize, chessboard3d, cameraMatrixL, distCoeffsL);
-	saveIntrinsicParameters("leftParameters.txt", cameraMatrixL, distCoeffsL);
 
 	// RIGHT CAMERA
 	cout << "Right Camera" << endl;
 	calibrateFromImages(pathR, imagesR, boardSize, chessboard3d, cameraMatrixR, distCoeffsR);
+	saveIntrinsicParameters("leftParameters.txt", cameraMatrixL, distCoeffsL);
 	saveIntrinsicParameters("rightParameters.txt", cameraMatrixR, distCoeffsR);
 
 	cout << "Done. Hit any key to end program." << endl;

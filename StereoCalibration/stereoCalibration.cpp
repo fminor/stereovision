@@ -62,7 +62,7 @@ vector<Point2f> cornersFromImage(char* path, char* pattern, int i, Size boardSiz
 
 	// Find Corners
 	patternFound = findChessboardCorners(image, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE);
-	cornerSubPix(image, corners, Size(1, 1), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 70, 0.0001));
+	cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS, 30, 0.01));
 	return corners;
 }
 
@@ -91,7 +91,7 @@ void calibrateFromImages(char* path, int images, Size boardSize, vector<Point3f>
 	cout << "Calibrating Camera: This may take a while" << endl;
 	cameraMatrix = Mat::eye(3, 3, CV_64F);
 	distCoeffs = Mat(5, 1, CV_64F);
-	TermCriteria criteria = TermCriteria(CV_CALIB_USE_INTRINSIC_GUESS, 70, 0.0001);
+	TermCriteria criteria = TermCriteria(CV_CALIB_USE_INTRINSIC_GUESS, 70, 1e-6);
 	calibrateCamera(objectPoints, imagePoints, boardSize, cameraMatrix, distCoeffs, rvecs, tvecs, 0, criteria);
 }
 
@@ -119,20 +119,20 @@ double stereoCalibrateFromImages(char* path, int images, Size boardSize, vector<
 	vector<vector<Point2f>> imagePoints2;
 
 	for (int i = 0; i < images; i++){
-		bool patternFound = false;
-		vector<Point2f> corners = cornersFromImage(path, "%sL%d.bmp", i, boardSize, patternFound);
-		if (patternFound)
-			imagePoints1.push_back(corners);
-		corners = cornersFromImage(path, "%sR%d.bmp", i, boardSize, patternFound);
-		if (patternFound) {
-			imagePoints2.push_back(corners);
+		bool patternFound[2] = { false, false };
+		vector<Point2f> corners[2];
+		corners[0] = cornersFromImage(path, "%sL%d.bmp", i, boardSize, patternFound[0]);
+		corners[1] = cornersFromImage(path, "%sR%d.bmp", i, boardSize, patternFound[1]);
+		if (patternFound[0] && patternFound[1]) {
+			imagePoints1.push_back(corners[0]);
+			imagePoints2.push_back(corners[1]);
 			objectPoints.push_back(chessboard3d);
 		}
 		int x = 0;
 	}
 
 	cout << "Performing stereo calibration" << endl;
-	TermCriteria criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 1e-6);
+	TermCriteria criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 0.1);
 	int flags = CV_CALIB_FIX_INTRINSIC;
 	return stereoCalibrate(objectPoints, imagePoints1, imagePoints2,
 		cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, 
@@ -152,6 +152,24 @@ void saveFundamentalMatrix(char* output, Mat &F){
 // F - output fundamental matrix
 void loadFundamentalMatrix(char* output, Mat &F){
 	FileStorage fs(output, FileStorage::READ);
+	fs["F"] >> F;
+}
+
+// Save/load stereo calibration
+// input file
+// input/output R, T, E, F
+void saveStereoCalib(char* file, Mat& R, Mat& T, Mat& E, Mat& F){
+	FileStorage fs(file, FileStorage::WRITE);
+	fs << "R" << R;
+	fs << "T" << T;
+	fs << "E" << E;
+	fs << "F" << F;
+}
+void loadStereoCalib(char* file, Mat& R, Mat& T, Mat& E, Mat& F){
+	FileStorage fs(file, FileStorage::READ);
+	fs["R"] >> R;
+	fs["T"] >> T;
+	fs["E"] >> E;
 	fs["F"] >> F;
 }
 
