@@ -4,7 +4,7 @@ int main() { // Task 3: Epipolar Lines
 	Mat imageL1, imageL2, imageR1, imageR2, F;
 	Mat cameraMatrixL, cameraMatrixR, distCoeffsL, distCoeffsR;
 	Size boardSize = Size(10, 7); int pair = 27;
-	char* path = "..\\Practice\\StereoImages\\Stereo";
+	char* path = "..\\tennis\\stereo\\stereo";
 
 	// Load intrinsic and distortion parameters
 	char* intrinsicParametersL = "..\\StereoCalibration\\leftParameters.txt";
@@ -13,8 +13,8 @@ int main() { // Task 3: Epipolar Lines
 	loadIntrinsicParameters(intrinsicParametersR, cameraMatrixR, distCoeffsR);
 
 	// Load images
-	char imageLpath[512]; sprintf(imageLpath, "%sL%d.bmp", path, pair);
-	char imageRpath[512]; sprintf(imageRpath, "%sR%d.bmp", path, pair);
+	char imageLpath[512]; sprintf(imageLpath, "%sL%02d.bmp", path, pair);
+	char imageRpath[512]; sprintf(imageRpath, "%sR%02d.bmp", path, pair);
 	imageL1 = imread(imageLpath, CV_LOAD_IMAGE_GRAYSCALE);
 	imageR1 = imread(imageRpath, CV_LOAD_IMAGE_GRAYSCALE);
 
@@ -24,8 +24,8 @@ int main() { // Task 3: Epipolar Lines
 
 	// Find corners
 	bool patternFound = false;
-	vector<Point2f> cornersL = cornersFromImage(path, "%sL%d.bmp", pair, boardSize, patternFound);
-	vector<Point2f> cornersR = cornersFromImage(path, "%sR%d.bmp", pair, boardSize, patternFound);
+	vector<Point2f> cornersL = cornersFromImage(path, "%sL%02d.bmp", pair, boardSize, patternFound);
+	vector<Point2f> cornersR = cornersFromImage(path, "%sR%02d.bmp", pair, boardSize, patternFound);
 
 	// Select points
 	cvtColor(imageL2, imageL2, CV_GRAY2RGB);

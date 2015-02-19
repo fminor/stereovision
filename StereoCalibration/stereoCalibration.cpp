@@ -81,7 +81,7 @@ void calibrateFromImages(char* path, int images, Size boardSize, vector<Point3f>
 	// For each picture
 	for (int i = 0; i < images; i++){
 		bool patternFound = false;
-		vector<Point2f> corners = cornersFromImage(path, "%s%d.bmp", i, boardSize, patternFound);
+		vector<Point2f> corners = cornersFromImage(path, "%s%02d.bmp", i, boardSize, patternFound);
 		if (patternFound){
 			imagePoints.push_back(corners); // Save corners for this image
 			objectPoints.push_back(chessboard3d); // Object is same in all pictures
@@ -91,7 +91,7 @@ void calibrateFromImages(char* path, int images, Size boardSize, vector<Point3f>
 	cout << "Calibrating Camera: This may take a while" << endl;
 	cameraMatrix = Mat::eye(3, 3, CV_64F);
 	distCoeffs = Mat(5, 1, CV_64F);
-	TermCriteria criteria = TermCriteria(CV_CALIB_USE_INTRINSIC_GUESS, 70, 1e-6);
+	TermCriteria criteria = TermCriteria(CV_CALIB_USE_INTRINSIC_GUESS, 70, 1e-5);
 	calibrateCamera(objectPoints, imagePoints, boardSize, cameraMatrix, distCoeffs, rvecs, tvecs, 0, criteria);
 }
 
@@ -121,8 +121,8 @@ double stereoCalibrateFromImages(char* path, int images, Size boardSize, vector<
 	for (int i = 0; i < images; i++){
 		bool patternFound[2] = { false, false };
 		vector<Point2f> corners[2];
-		corners[0] = cornersFromImage(path, "%sL%d.bmp", i, boardSize, patternFound[0]);
-		corners[1] = cornersFromImage(path, "%sR%d.bmp", i, boardSize, patternFound[1]);
+		corners[0] = cornersFromImage(path, "%sL%02d.bmp", i, boardSize, patternFound[0]);
+		corners[1] = cornersFromImage(path, "%sR%02d.bmp", i, boardSize, patternFound[1]);
 		if (patternFound[0] && patternFound[1]) {
 			imagePoints1.push_back(corners[0]);
 			imagePoints2.push_back(corners[1]);

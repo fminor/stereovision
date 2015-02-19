@@ -6,7 +6,7 @@ int main(){
 	Mat cameraMatrix[2];
 	Mat distCoeffs[2];
 	Size boardSize = Size(10, 7); int pair = 23;
-	char* path = "..\\Practice\\StereoImages\\Stereo";
+	char* path = "..\\tennis\\stereo\\stereo";
 
 	// Load intrinsic parameters
 	char* intrinsicParametersL = "..\\StereoCalibration\\leftParameters.txt";
@@ -18,8 +18,8 @@ int main(){
 
 
 	// Load images
-	char imageLpath[512]; sprintf(imageLpath, "%sL%d.bmp", path, pair);
-	char imageRpath[512]; sprintf(imageRpath, "%sR%d.bmp", path, pair);
+	char imageLpath[512]; sprintf(imageLpath, "%sL%02d.bmp", path, pair);
+	char imageRpath[512]; sprintf(imageRpath, "%sR%02d.bmp", path, pair);
 	img[0] = imread(imageLpath, CV_LOAD_IMAGE_GRAYSCALE);
 	img[1] = imread(imageRpath, CV_LOAD_IMAGE_GRAYSCALE);
 
@@ -49,8 +49,8 @@ int main(){
 	waitKey(0);
 
 	// Save images
-	imwrite("Left.bmp", img[0]);
-	imwrite("Right.bmp", img[1]);
+	imwrite("Left.bmp", cimg[0]);
+	imwrite("Right.bmp", cimg[1]);
 
 	return 0;
 }

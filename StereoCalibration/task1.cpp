@@ -5,9 +5,12 @@ int main() { // Task 1: Camera Calibration
 	Mat cameraMatrixL, distCoeffsL, cameraMatrixR, distCoeffsR;
 
 	// Make changes here!
-	Size boardSize = Size(10, 7); double squareSize = 2.0;
-	char* pathL = "..\\Practice\\LeftCameraImages\\CameraL"; int imagesL = 32;
-	char* pathR = "..\\Practice\\RightCameraImages\\CameraR"; int imagesR = 32;
+	Size boardSize = Size(10, 7); double squareSize = 3.88;
+	//char* pathL = "..\\Practice\\LeftCameraImages\\CameraL";
+	//char* pathR = "..\\Practice\\RightCameraImages\\CameraR";
+	int imagesL = 32;  int imagesR = 32;
+	char* pathL = "..\\tennis\\left\\leftL";
+	char* pathR = "..\\tennis\\right\\rightR";
 
 	// Create chessboard in 3d object coordinates
 	vector<Point3f> chessboard3d = makeChessboard(boardSize, squareSize);

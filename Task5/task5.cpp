@@ -2,11 +2,10 @@
 
 int main(){
 	Mat img[2], rimg[2], cimg[2], R, T, E, F;
-	Mat R1, R2, P1, P2, Q;
 	Mat cameraMatrix[2];
 	Mat distCoeffs[2];
-	Size boardSize = Size(10, 7); int pair = 17;
-	char* path = "..\\Practice\\StereoImages\\Stereo";
+	Size boardSize = Size(10, 7); double squareSize = 3.88; int pair = 19;
+	char* path = "..\\tennis\\stereo\\stereo";
 
 	// Load intrinsic parameters
 	char* intrinsicParametersL = "..\\StereoCalibration\\leftParameters.txt";
@@ -18,10 +17,13 @@ int main(){
 
 
 	// Load images
-	char imageLpath[512]; sprintf(imageLpath, "%sL%d.bmp", path, pair);
-	char imageRpath[512]; sprintf(imageRpath, "%sR%d.bmp", path, pair);
+	char imageLpath[512]; sprintf(imageLpath, "%sL%02d.bmp", path, pair);
+	char imageRpath[512]; sprintf(imageRpath, "%sR%02d.bmp", path, pair);
 	img[0] = imread(imageLpath, CV_LOAD_IMAGE_GRAYSCALE);
 	img[1] = imread(imageRpath, CV_LOAD_IMAGE_GRAYSCALE);
+
+	// Create chessboard in 3d object coordinates
+	vector<Point3f> chessboard3d = makeChessboard(boardSize, squareSize);
 
 
 	// Display images (for debugging)

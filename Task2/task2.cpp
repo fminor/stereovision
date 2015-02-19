@@ -5,8 +5,9 @@ int main(){ // Task 2: Stereo Calibration
 	Mat R, T, E, F;
 	char* intrinsicParametersL = "..\\StereoCalibration\\leftParameters.txt";
 	char* intrinsicParametersR = "..\\StereoCalibration\\rightParameters.txt";
-	char* stereoImages = "..\\Practice\\StereoImages\\Stereo"; int images = 32;
-	Size boardSize = Size(10, 7); double squareSize = 2.0;
+	//char* stereoImages = "..\\Practice\\StereoImages\\Stereo"; int images = 32;
+	char* stereoImages = "..\\tennis\\stereo\\stereo"; int images = 32;
+	Size boardSize = Size(10, 7); double squareSize = 3.88;
 
 	// Load intrinsic and distortion paramters calcluated in Task 1
 	loadIntrinsicParameters(intrinsicParametersL, cameraMatrixL, distCoeffsL);
