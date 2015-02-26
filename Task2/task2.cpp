@@ -1,5 +1,5 @@
 #include "../StereoCalibration/stereoCalibration.h"
-
+#include <fstream>
 int main(){ // Task 2: Stereo Calibration
 	Mat cameraMatrixL, distCoeffsL, cameraMatrixR, distCoeffsR;
 	Mat R, T, E, F;
@@ -19,10 +19,11 @@ int main(){ // Task 2: Stereo Calibration
 	stereoCalibrateFromImages(stereoImages, images, boardSize, chessboard3d, 
 		cameraMatrixL, distCoeffsL, cameraMatrixR, distCoeffsR, R, T, E, F);
 
-	cout << "R: " << R << endl;
-	cout << "T: " << T << endl;
-	cout << "E: " << E << endl;
-	cout << "F: " << F << endl;
+	ofstream fout("task5.txt");
+	fout << "R: " << R << endl;
+	fout << "T: " << T << endl;
+	fout << "E: " << E << endl;
+	fout << "F: " << F << endl;
 
 	// Save F
 	saveFundamentalMatrix("F.txt", F);

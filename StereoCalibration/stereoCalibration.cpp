@@ -62,7 +62,7 @@ vector<Point2f> cornersFromImage(char* path, char* pattern, int i, Size boardSiz
 
 	// Find Corners
 	patternFound = findChessboardCorners(image, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE);
-	cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS, 30, 0.01));
+	cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.01));
 	return corners;
 }
 
@@ -185,3 +185,24 @@ void drawEpiLine(Mat& img, Point3f abc, Scalar color){
 		point2,
 		color);
 }
+
+// Save/load stereo calibration
+// input file
+// input/output R, T, E, F
+void saveStereoRect(char* file, Mat& R1, Mat& R2, Mat& P1, Mat& P2, Mat& Q){
+	FileStorage fs(file, FileStorage::WRITE);
+	fs << "R1" << R1;
+	fs << "R2" << R2;
+	fs << "P1" << P1;
+	fs << "P2" << P2;
+	fs << "Q" << Q;
+}
+void loadStereoRect(char* file, Mat& R1, Mat& R2, Mat& P1, Mat& P2, Mat& Q){
+	FileStorage fs(file, FileStorage::READ);
+	fs["R1"] >> R1;
+	fs["R2"] >> R2;
+	fs["P1"] >> P1;
+	fs["P2"] >> P2;
+	fs["Q"] >> Q;
+}
+
