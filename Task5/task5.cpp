@@ -66,13 +66,6 @@ int main(){
 		}
 	}
 
-
-	// Display images (for debugging)
-	//namedWindow("Left"); imshow("Left", cimg[0]);
-	//namedWindow("Right"); imshow("Right", cimg[1]);
-	//namedWindow("Disparity"); imshow("Disparity", disparity);
-	waitKey(0);
-
 	// Save images
 	imwrite("Left.bmp", cimg[0]);
 	imwrite("Right.bmp", cimg[1]);

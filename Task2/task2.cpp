@@ -19,7 +19,7 @@ int main(){ // Task 2: Stereo Calibration
 	stereoCalibrateFromImages(stereoImages, images, boardSize, chessboard3d, 
 		cameraMatrixL, distCoeffsL, cameraMatrixR, distCoeffsR, R, T, E, F);
 
-	ofstream fout("task5.txt");
+	ofstream fout("task2.txt");
 	fout << "R: " << R << endl;
 	fout << "T: " << T << endl;
 	fout << "E: " << E << endl;
