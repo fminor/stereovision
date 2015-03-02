@@ -20,7 +20,7 @@ int main() { // Task 1: Camera Calibration
 	calibrateFromImages(pathL, imagesL, boardSize, chessboard3d, cameraMatrixL, distCoeffsL);
 
 	// RIGHT CAMERA
-	cout << "Right Camera" << endl;
+	//cout << "Right Camera" << endl;
 	calibrateFromImages(pathR, imagesR, boardSize, chessboard3d, cameraMatrixR, distCoeffsR);
 	saveIntrinsicParameters("leftParameters.txt", cameraMatrixL, distCoeffsL);
 	saveIntrinsicParameters("rightParameters.txt", cameraMatrixR, distCoeffsR);

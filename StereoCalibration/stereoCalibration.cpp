@@ -62,7 +62,9 @@ vector<Point2f> cornersFromImage(char* path, char* pattern, int i, Size boardSiz
 
 	// Find Corners
 	patternFound = findChessboardCorners(image, boardSize, corners, CV_CALIB_CB_ADAPTIVE_THRESH + CV_CALIB_CB_NORMALIZE_IMAGE);
-	cornerSubPix(image, corners, Size(5, 5), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.01));
+	// Size(1,1) is ideal for individual camera calibration
+	// Size(5,5) is ideal for stereo calibration
+	cornerSubPix(image, corners, Size(1, 1), Size(-1, -1), TermCriteria(CV_TERMCRIT_EPS + CV_TERMCRIT_ITER, 30, 0.001));
 	return corners;
 }
 
@@ -91,8 +93,9 @@ void calibrateFromImages(char* path, int images, Size boardSize, vector<Point3f>
 	cout << "Calibrating Camera: This may take a while" << endl;
 	cameraMatrix = Mat::eye(3, 3, CV_64F);
 	distCoeffs = Mat(5, 1, CV_64F);
-	TermCriteria criteria = TermCriteria(CV_CALIB_USE_INTRINSIC_GUESS, 70, 1e-5);
+	TermCriteria criteria = TermCriteria(CV_CALIB_USE_INTRINSIC_GUESS, 50, 1e-4);
 	calibrateCamera(objectPoints, imagePoints, boardSize, cameraMatrix, distCoeffs, rvecs, tvecs, 0, criteria);
+	//calibrateCamera(objectPoints, imagePoints, boardSize, cameraMatrix, distCoeffs, rvecs, tvecs);
 }
 
 // Stereo Calibration from images
@@ -132,7 +135,7 @@ double stereoCalibrateFromImages(char* path, int images, Size boardSize, vector<
 	}
 
 	cout << "Performing stereo calibration" << endl;
-	TermCriteria criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 30, 0.1);
+	TermCriteria criteria = TermCriteria(TermCriteria::COUNT+TermCriteria::EPS, 70, 1e-6);
 	int flags = CV_CALIB_FIX_INTRINSIC;
 	return stereoCalibrate(objectPoints, imagePoints1, imagePoints2,
 		cameraMatrix1, distCoeffs1, cameraMatrix2, distCoeffs2, 
